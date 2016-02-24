@@ -1,8 +1,7 @@
 'use strict';
 
 class TodoApp {
-  constructor() {
-  }
+  constructor() {}
 }
 
 class TodoList {
