@@ -1,40 +1,58 @@
 'use strict';
 
-class TodoApp {
-  constructor() {
-  }
-}
-
 class TodoList {
   constructor() {
-    this.todoList = [];
+    this.todos = [];
+    this.container = null;
+    this.todoInput = document.createElement('input');
+    this.addButton = document.createElement('button');
+
+    this.addButton.addEventListener('click', this.addTodo.bind(this));
   }
 
-  addTodo(todo) {
-    this.todoList.push(todo);
+  addTodo() {
+    let newTodo = new Todo(this.todoInput.value);
+
+    this.todos.push(newTodo);
+    this.todoInput.value = '';
+
+    this.container.appendChild(newTodo.createTodoElement());
   }
 
-  removeTodoAt(index) {
-    this.todoList.splice(index, 1);
+  createContainer() {
+    let bodyFirstChild = document.body.firstChild;
+
+    this.todoInput.type = 'text';
+    this.addButton.innerText = 'Add todo';
+
+    this.container = document.createElement('div');
+    this.container.appendChild(this.todoInput);
+    this.container.appendChild(this.addButton);
+
+    document.body.insertBefore(this.container, bodyFirstChild);
   }
 
-  renderTodos() {
-    this.todoList.forEach(todo => todo.render());
+  render() {
+    if (!this.container) {
+      this.createContainer();
+    }
   }
 }
 
 class Todo {
-  constructor(task, state) {
+  constructor(task) {
     this.task = task;
-    this.state = state || 'open';
-    this.template = `<p class="${this.state}">${this.task}</p>`
+    this.state = 'open';
   }
 
-  update(task, state) {
-    this.task = task;
-    this.state = state;
+  createTodoElement() {
+    let el = document.createElement('div');
+
+    el.innerHTML = `<p class="${this.state}">${this.task}</p>`;
+
+    return el;
   }
 }
 
-let myTodoList = new TodoList();
-myTodoList.addTodo(new Todo('Commit me', 'open'));
+let todoList = new TodoList();
+todoList.render();
