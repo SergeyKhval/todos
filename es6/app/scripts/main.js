@@ -3,7 +3,7 @@
 class TodoList {
   constructor() {
     this.todos = [];
-    this.container = null;
+    this.container = document.createElement('div');
     this.todoInput = document.createElement('input');
     this.addButton = document.createElement('button');
 
@@ -19,23 +19,25 @@ class TodoList {
     this.container.appendChild(newTodo.createTodoElement());
   }
 
-  createContainer() {
-    let bodyFirstChild = document.body.firstChild;
+  removeTodo(index) {
+    this.todos[index].removeTodo();
+    this.todos.splice(index, 1);
+  }
 
+  assembleContainer() {
     this.todoInput.type = 'text';
     this.addButton.innerText = 'Add todo';
 
-    this.container = document.createElement('div');
     this.container.appendChild(this.todoInput);
     this.container.appendChild(this.addButton);
-
-    document.body.insertBefore(this.container, bodyFirstChild);
   }
 
   render() {
-    if (!this.container) {
-      this.createContainer();
-    }
+    let bodyFirstChild = document.body.firstChild;
+
+    this.assembleContainer();
+
+    document.body.insertBefore(this.container, bodyFirstChild);
   }
 }
 
@@ -43,14 +45,17 @@ class Todo {
   constructor(task) {
     this.task = task;
     this.state = 'open';
+    this.container = document.createElement('div');
   }
 
   createTodoElement() {
-    let el = document.createElement('div');
+    this.container.innerHTML = `<p class="${this.state}">${this.task}</p>`;
 
-    el.innerHTML = `<p class="${this.state}">${this.task}</p>`;
+    return this.container;
+  }
 
-    return el;
+  removeTodo(){
+    this.container.parentNode.removeChild(this.container);
   }
 }
 
