@@ -2,7 +2,8 @@
   "name": "es6",
   "private": true,
   "dependencies": {
-    "bootstrap-sass": "~3.3.5"
+    "bootstrap-sass": "~3.3.5",
+    "babel-polyfill": "latest"
   },
   "overrides": {
     "bootstrap-sass": {
